@@ -5,6 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from base_pages.login_admin_base_page import login_admin_page
 import os
+from utility.custom_logger import logclass
+
 from utility.read_properties import Read_config
 
 class TestAdminLogin:
@@ -13,6 +15,8 @@ class TestAdminLogin:
     username = Read_config.valid_user_name()
     password = Read_config.valid_password()
     invalid_username = Read_config.invalid_user_name()
+    logger=logclass.log_gen()
+
 
 
     # If you don't need to keep the browser open, re-enable teardown:
@@ -21,12 +25,14 @@ class TestAdminLogin:
 
     def test_title_verification(self,setup):
         self.driver=setup
+        self.logger.info("***************** 1st *******************")
         self.driver.get(self.admin_page_url)
         exp_title = "Swag Labs"
         act_title = self.driver.title
         assert act_title == exp_title
 
     def test_valid_login(self,setup):
+        self.logger.info("***************** 2nd *******************")
         self.driver=setup
         self.driver.get(self.admin_page_url)
         self.loginObject = login_admin_page(self.driver)  # Pass driver to login page
@@ -40,6 +46,7 @@ class TestAdminLogin:
         assert login_check == "Products"
 
     def test_invalid_login(self, setup):
+        self.logger.info("***************** 3rd *******************")
         self.driver = setup
         self.driver.get(self.admin_page_url)
         self.loginObject = login_admin_page(self.driver)
